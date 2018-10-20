@@ -1,2 +1,5 @@
-# yii2-struct-related
-Save the relationship between objects (private)
+# yii2-console-task
+Abstraction over crontab.
+
+Allows you to configure crontab once 
+and pass the logic to your controllers
