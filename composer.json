@@ -1,0 +1,41 @@
+{
+    "name": "kuaukutsu/yii2-console-task",
+    "description": "Controller Task. Abstraction over crontab.",
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+
+    "authors": [
+        {
+            "name": "Dmitriy Krivopalov",
+            "email": "dimarik82@gmail.com"
+        }
+    ],
+
+    "support": {
+        "issues": "https://github.com/kuaukutsu/yii2-console-task/issues",
+        "source": "https://github.com/kuaukutsu/yii2-console-task"
+    },
+
+    "require": {
+        "php": ">=7.2.0",
+        "yiisoft/yii2": "~2.0.14"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "~7.3.0"
+    },
+
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "kuaukutsu\\console\\task\\": "src",
+            "kuaukutsu\\console\\task\\tests\\": "tests"
+        }
+    }
+}
