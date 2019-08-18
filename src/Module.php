@@ -1,6 +1,7 @@
 <?php
 namespace kuaukutsu\console\task;
 
+use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 use yii\console\Application;
@@ -21,7 +22,7 @@ class Module implements BootstrapInterface
      * @param \yii\base\Application $app
      * @throws InvalidConfigException
      */
-    public function bootstrap($app)
+    public function bootstrap($app): void
     {
         if ($app instanceof Application) {
             $app->controllerMap[$this->getCommandId()] = [
@@ -36,9 +37,9 @@ class Module implements BootstrapInterface
      * @return string command id
      * @throws
      */
-    private function getCommandId()
+    private function getCommandId(): string
     {
-        foreach (\Yii::$app->getComponents(false) as $id => $component) {
+        foreach (Yii::$app->getComponents(false) as $id => $component) {
             if ($component === $this) {
                 return Inflector::camel2id($id);
             }
@@ -52,7 +53,7 @@ class Module implements BootstrapInterface
      * @param array $as
      * @param $controllerMap
      */
-    private function prepareAs(array $as, &$controllerMap)
+    private function prepareAs(array $as, &$controllerMap): void
     {
         // prepare as
         if (count($as)) {

@@ -17,7 +17,7 @@ class VerboseBehavior extends Behavior
     /**
      * @inheritdoc
      */
-    public function events()
+    public function events(): array
     {
         return [
             Task::EVENT_BEFORE_ACTION   => 'beforeAction',
@@ -32,7 +32,7 @@ class VerboseBehavior extends Behavior
     /**
      * @param ActionEvent $event
      */
-    public function beforeAction(ActionEvent $event)
+    public function beforeAction(ActionEvent $event): void
     {
         Console::stdout(
             Console::ansiFormat(
@@ -44,7 +44,7 @@ class VerboseBehavior extends Behavior
     /**
      * @param ActionEvent $event
      */
-    public function afterAction(ActionEvent $event)
+    public function afterAction(ActionEvent $event): void
     {
         Console::stdout(
             Console::ansiFormat(
@@ -56,7 +56,7 @@ class VerboseBehavior extends Behavior
     /**
      * @param TaskEvent $event
      */
-    public function beforeRun(TaskEvent $event)
+    public function beforeRun(TaskEvent $event): void
     {
         Console::stdout(
             Console::ansiFormat(
@@ -68,7 +68,7 @@ class VerboseBehavior extends Behavior
     /**
      * @param TaskEvent $event
      */
-    public function afterRun(TaskEvent $event)
+    public function afterRun(TaskEvent $event): void
     {
         Console::stdout(
             Console::ansiFormat(
@@ -80,7 +80,7 @@ class VerboseBehavior extends Behavior
     /**
      * @param TaskEvent $event
      */
-    public function beforeError(TaskEvent $event)
+    public function beforeError(TaskEvent $event): void
     {
         Console::stdout(
             Console::ansiFormat(
@@ -92,7 +92,7 @@ class VerboseBehavior extends Behavior
     /**
      * @param ErrorEvent $event
      */
-    public function afterError(ErrorEvent $event)
+    public function afterError(ErrorEvent $event): void
     {
         Console::stderr(
             Console::ansiFormat(

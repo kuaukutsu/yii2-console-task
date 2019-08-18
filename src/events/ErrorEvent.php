@@ -1,6 +1,7 @@
 <?php
 namespace kuaukutsu\console\task\events;
 
+use Exception;
 use yii\base\Event;
 
 /**
@@ -10,16 +11,16 @@ use yii\base\Event;
 class ErrorEvent extends Event
 {
     /**
-     * @var \Exception
+     * @var Exception
      */
     public $exception;
 
     /**
      * ErrorEvent constructor.
-     * @param \Exception $exception
+     * @param Exception $exception
      * @param array $config
      */
-    public function __construct(\Exception $exception, array $config = [])
+    public function __construct(Exception $exception, array $config = [])
     {
         $this->exception = $exception;
         parent::__construct($config);

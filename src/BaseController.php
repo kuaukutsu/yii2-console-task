@@ -28,7 +28,7 @@ abstract class BaseController extends Controller
     /**
      * @inheritdoc
      */
-    public function optionAliases()
+    public function optionAliases(): array
     {
         return array_merge(parent::optionAliases(), [
             'v' => 'verbose'
@@ -38,35 +38,35 @@ abstract class BaseController extends Controller
     /**
      * Выполняется каждые полчаса в указанное сервером время
      */
-    public function actionHalfHourly()
+    public function actionHalfHourly(): void
     {
     }
 
     /**
      * Выполняется ежечасно в указанное сервером время
      */
-    public function actionHourly()
+    public function actionHourly(): void
     {
     }
 
     /**
      * Выполняется ежедневно в указанное сервером время
      */
-    public function actionDaily()
+    public function actionDaily(): void
     {
     }
 
     /**
      * Выполняется еженедельно в указанное сервером время (last day of the week)
      */
-    public function actionWeekly()
+    public function actionWeekly(): void
     {
     }
 
     /**
      * Выполняется ежемесячно в указанное сервером время (first day of the mounth)
      */
-    public function actionMonthly()
+    public function actionMonthly(): void
     {
     }
 }

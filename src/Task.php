@@ -1,6 +1,7 @@
 <?php
 namespace kuaukutsu\console\task;
 
+use Yii;
 use yii\base\{
     Action,
     Controller,
@@ -16,6 +17,8 @@ use yii\helpers\ {
 use kuaukutsu\console\task\events\ErrorEvent;
 use kuaukutsu\console\task\events\TaskEvent;
 use kuaukutsu\console\task\behaviors\VerboseBehavior;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Class Task
@@ -27,10 +30,10 @@ final class Task extends BaseController
      * EVENTs
      ********************/
 
-    const EVENT_BEFORE_ERROR = 'event-before-error';
-    const EVENT_AFTER_ERROR = 'event-after-error';
-    const EVENT_BEFORE_RUN = 'event-before-run';
-    const EVENT_AFTER_RUN = 'event-after-run';
+    public const EVENT_BEFORE_ERROR = 'event-before-error';
+    public const EVENT_AFTER_ERROR = 'event-after-error';
+    public const EVENT_BEFORE_RUN = 'event-before-run';
+    public const EVENT_AFTER_RUN = 'event-after-run';
 
     /**
      * @var array additional options to the verbose behavior.
@@ -46,7 +49,7 @@ final class Task extends BaseController
     /**
      * @inheritdoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if ($this->verbose) {
             $this->attachBehavior('verbose', $this->verboseConfig);
@@ -62,7 +65,7 @@ final class Task extends BaseController
     /**
      * @param \Exception $exception
      */
-    protected function handlerError(\Exception $exception)
+    protected function handlerError(\Exception $exception): void
     {
         $this->trigger(self::EVENT_AFTER_ERROR, new ErrorEvent($exception));
     }
@@ -74,15 +77,15 @@ final class Task extends BaseController
     /**
      * @param Action $action
      */
-    private function runDependence(Action $action)
+    private function runDependence(Action $action): void
     {
         $params = [];
         foreach ($this->options($action->id) as $option) {
             $params[$option] = $this->{$option};
         }
 
-        foreach (glob(\Yii::$app->getControllerPath() . DIRECTORY_SEPARATOR . '*') as $filename) {
-            $className = \Yii::$app->controllerNamespace . '\\' . StringHelper::basename($filename, '.php');
+        foreach (glob(Yii::$app->getControllerPath() . DIRECTORY_SEPARATOR . '*') as $filename) {
+            $className = Yii::$app->controllerNamespace . '\\' . StringHelper::basename($filename, '.php');
             if (class_exists($className) && is_a($className, BaseController::class, true)) {
                 if ($controller = $this->prepareController($className)) {
                     if ($this->existAction($controller, $action)) {
@@ -98,7 +101,7 @@ final class Task extends BaseController
      * @param Action $action
      * @param array $params
      */
-    private function runDependenceAction(Controller $controller, Action $action, array $params)
+    private function runDependenceAction(Controller $controller, Action $action, array $params): void
     {
         try {
 
@@ -134,7 +137,7 @@ final class Task extends BaseController
     private function prepareController(string $className): ?Controller
     {
         try {
-            return \Yii::$app->createControllerByID(
+            return Yii::$app->createControllerByID(
                 Inflector::camel2id(StringHelper::basename($className, 'Controller'))
             );
         } catch (InvalidConfigException $exception) {
@@ -152,11 +155,11 @@ final class Task extends BaseController
     private function existAction(Controller $controller, Action $action): bool
     {
         try {
-            $reflectionController = new \ReflectionClass(get_class($controller));
+            $reflectionController = new ReflectionClass(get_class($controller));
             if ($reflectionMethod = $reflectionController->getMethod(Inflector::id2camel('action-' . $action->id))) {
                 return $reflectionMethod->class !== BaseController::class;
             }
-        } catch (\ReflectionException $exception) {
+        } catch (ReflectionException $exception) {
             $this->handlerError($exception);
         }
 
